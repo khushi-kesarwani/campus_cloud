@@ -22,10 +22,13 @@ import com.campuscloud.users_service.service.AuthService;
 import com.campuscloud.users_service.service.RefreshTokenService;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+
 public class AuthController 
 {
     private final RefreshTokenService refreshTokenService;
@@ -34,11 +37,15 @@ public class AuthController
     private final CsrfTokenUtil csrfTokenUtil;
     
     private final AuthService authService;
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login2(
             @RequestBody LoginRequestDTO request
     ) {
+    	log.info("Login request received");
+    	log.warn("Password is null during login attempt");
+    	
     	if (request.getUsername() == null || request.getUsername().isEmpty()) {
     	    return ResponseEntity.badRequest().build();
     	}
